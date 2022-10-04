@@ -3,9 +3,18 @@ from tkinter import messagebox
 import json
 
 def agendarPausa():
+    while True:
+        try:
+            with open("pause.json", "r") as infile:
+                parametros = json.load(infile)
+            break
+        except FileNotFoundError:
+            parametros = {
+            "statuspausa": False,
+        }
+            with open("pause.json", "w") as outfile:
+                json.dump(parametros, outfile)
 
-    with open("pause.json", "r") as infile:
-        parametros = json.load(infile)
     if parametros["statuspausa"] == True:
         parametros["statuspausa"] = False
     else:
