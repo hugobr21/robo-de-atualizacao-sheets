@@ -2,31 +2,31 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 import os
-import pyautogui
 import pandas as pd
 from google_api_functions import *
 from counter_restart import *
 import logging
 import time
 from exceptions import *
+import json
 
-user_name = os.getlogin()
-diretorio_robo = os.getcwd()
+def verificarPausa():
+    while True:
+        try:
+            with open("pause.json", "r") as infile:
+                parametros = json.load(infile)
+            if parametros["statuspausa"]:
+                time.sleep(2)
+                print("Robô em pausa")
+            else:
+                break
+        except:
+            pass
 
-log_filename_start = os.getcwd() + '\\Logs\\' + time.strftime('%d_%m_%Y %H_%M_%S') + '.log'
-logging.basicConfig(filename=log_filename_start, level=logging.DEBUG, format='%(asctime)s, %(message)s',datefmt='%m/%d/%Y %I:%M:%S')
-
-contador = Counter()
-controlerobo = ControlRobot()
-
-# The ID and range of a sample spreadsheet.
-SAMPLE_SPREADSHEET_ID = '1pn4STF7yzx14FjZ1kJaQ5swsc5xiRA56PAiXrpvAkaU'
-SAMPLE_RANGE_NAME_TMS = 'TMS!A2:BG'
-SAMPLE_RANGE_NAME_YMS = 'YMS!A2:BG'
-
-options = Options()
-options.set_preference('network.proxy.type',0)
-options.binary_location = r'C:\\Users\\'+ user_name +'\\AppData\\Local\\Mozilla Firefox\\firefox.exe'
+def carregarParametros():
+    with open("parametros.json", "r") as infile:
+        parametros = json.load(infile)
+    return parametros
 
 def gerarLinkTMS():
     data_15 = time.strftime('%Y-%m-%d',time.gmtime(time.time()-(60*60*15)))
@@ -85,7 +85,8 @@ def funcao_principal():
             time.sleep(4)
             driver.find_element(By.XPATH,'/html/body/main/div/div/div[2]/div/div/div/div/div[3]/div/div[2]/ul[2]/li[2]/a').click()
             atualizarBase(SAMPLE_RANGE_NAME_TMS,'TMS')
-            driver2.get('https://meli.looker.com/dashboards/shipping::yms_journey_driver?Facility=%22BRXRJ1%2CSRJ1%22%2CXRJ1%2C%22XRJ1%2CSRJ1%22%2CXDRJ1%2CSRJ1&Arrival+Facility=SRJ1%2CXRJ1%2C%22XRJ1%2CSRJ1%22&Mile=%22first_mile%22&Licence+Plate=&Operation=&Date=today&Shipment+Type=')
+            driver2.get(parametros["linkdolooker"])
+            # driver2.get('https://meli.looker.com/dashboards/shipping::yms_journey_driver?Facility=%22BRXRJ1%2CSRJ1%22%2CXRJ1%2C%22XRJ1%2CSRJ1%22%2CXDRJ1%2CSRJ1&Arrival+Facility=SRJ1%2CXRJ1%2C%22XRJ1%2CSRJ1%22&Mile=%22first_mile%22&Licence+Plate=&Operation=&Date=today&Shipment+Type=')
             time.sleep(4)
             driver2.find_element(By.ID,'dashboard-layout-wrapper').click()
             time.sleep(4)
@@ -102,10 +103,35 @@ def funcao_principal():
             print('Não foi possível completar processo de download.')
             pass
 
+parametros = carregarParametros()
+
+user_name = os.getlogin()
+diretorio_robo = os.getcwd()
+
+log_filename_start = os.getcwd() + '\\Logs\\' + time.strftime('%d_%m_%Y %H_%M_%S') + '.log'
+logging.basicConfig(filename=log_filename_start, level=logging.DEBUG, format='%(asctime)s, %(message)s',datefmt='%m/%d/%Y %I:%M:%S')
+
+contador = Counter()
+controlerobo = ControlRobot()
+
+# The ID and range of a sample spreadsheet.
+
+SAMPLE_SPREADSHEET_ID = parametros["idplanilha"]
+# SAMPLE_SPREADSHEET_ID = '1pn4STF7yzx14FjZ1kJaQ5swsc5xiRA56PAiXrpvAkaU'
+SAMPLE_RANGE_NAME_TMS = 'TMS!A2:BG'
+SAMPLE_RANGE_NAME_YMS = 'YMS!A2:BG'
+
+options = Options()
+options.set_preference('network.proxy.type',0)
+options.binary_location = parametros["caminhonavegador"]
+# options.binary_location = r'C:\\Users\\'+ user_name +'\\AppData\\Local\\Mozilla Firefox\\firefox.exe'
+
 driver = webdriver.Firefox(options=options)
 driver.get('https://tms.mercadolivre.com.br/')
 driver2 = webdriver.Firefox(options=options)
-driver2.get('https://meli.looker.com/dashboards/shipping::yms_journey_driver?Facility=%22BRXRJ1%2CSRJ1%22%2CXRJ1%2C%22XRJ1%2CSRJ1%22%2CXDRJ1%2CSRJ1&Arrival+Facility=SRJ1%2CXRJ1%2C%22XRJ1%2CSRJ1%22&Mile=%22first_mile%22&Licence+Plate=&Operation=&Date=today&Shipment+Type=')
+
+driver2.get(parametros["linkdolooker"])
+# driver2.get('https://meli.looker.com/dashboards/shipping::yms_journey_driver?Facility=%22BRXRJ1%2CSRJ1%22%2CXRJ1%2C%22XRJ1%2CSRJ1%22%2CXDRJ1%2CSRJ1&Arrival+Facility=SRJ1%2CXRJ1%2C%22XRJ1%2CSRJ1%22&Mile=%22first_mile%22&Licence+Plate=&Operation=&Date=today&Shipment+Type=')
 os.system('pause')
 time.sleep(3)
 funcao_principal()
