@@ -2,6 +2,21 @@ import tkinter as tk
 from tkinter import messagebox
 import json
 
+def agendarPausa():
+
+    with open("pause.json", "r") as infile:
+        parametros = json.load(infile)
+    if parametros["statuspausa"] == True:
+        parametros["statuspausa"] = False
+    else:
+        parametros["statuspausa"] = True
+    parametros = {
+        "statuspausa": parametros["statuspausa"],
+    }
+    with open("pause.json", "w") as outfile:
+        json.dump(parametros, outfile)
+    messagebox.showinfo(title="Feito!", message="Pausa agendada com sucesso!")
+    
 def gravarParametros():
 
     try:
@@ -34,7 +49,7 @@ def gravarParametros():
 
             with open("parametros.json", "w") as outfile:
                 json.dump(parametros, outfile)
-            messagebox.showinfo(title="Cuidado!", message="Parâmetros gravados com sucesso!")
+            messagebox.showinfo(title="Feito!", message="Parâmetros gravados com sucesso!")
     except:
         messagebox.showinfo(title="Cuidado!", message="Valores de Delay inválidos")
 
@@ -91,7 +106,7 @@ delaypreclickwebentry.grid(column=1,row=5,sticky=tk.E)
 
 # botões de agendamento
 
-agendamentodepausa = tk.Button(window,text='1 - Agendar Pausa/Retornar de Pausa')
+agendamentodepausa = tk.Button(window,text='1 - Agendar Pausa/Retornar de Pausa',command=agendarPausa)
 agendamentodepausa.grid(column=0,row=6, columnspan=2,padx=5, pady=5,sticky=tk.E)
 agendamentodeencerramento = tk.Button(window,text='2 - Agendar Encerramento')
 agendamentodeencerramento.grid(column=0,row=7, columnspan=2,padx=5, pady=5,sticky=tk.E)
