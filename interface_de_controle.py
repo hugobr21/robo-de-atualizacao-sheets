@@ -1,23 +1,44 @@
 import tkinter as tk
+from tkinter import messagebox
 import json
 
 def gravarParametros():
-    # try:
-    #     print(caminhonavegadorentry.get())
-    # except Exception as e:
-    #     print(e)
-    #entry in entries para verificar parametros
-    parametros = {
-        "caminhonavegador": caminhonavegadorentry.get(),
-        "idplanilha": iddaplanilhaentry.get(),
-        "linkdolooker": linkdolookerentry.get(),
-        "delayprecarregamento": delaycarregamentoentry.get(),
-        "delayacompanhamento": delayacompanhamentoentry.get(),
-        "delayclicweb": delaypreclickwebentry.get()
-    }
 
-    with open("parametros.json", "w") as outfile:
-        json.dump(parametros, outfile)
+    try:
+        #validação de campos numéricos
+
+        int(delaycarregamentoentry.get())
+        int(delayacompanhamentoentry.get())
+        int(delaypreclickwebentry.get())
+
+        # validação de campo vazio
+
+        if '' in [
+            caminhonavegadorentry.get(),
+            iddaplanilhaentry.get(),
+            linkdolookerentry.get(),
+            delaycarregamentoentry.get(),
+            delayacompanhamentoentry.get(),
+            delaypreclickwebentry.get()
+            ]:
+            messagebox.showinfo(title="Cuidado!", message="Há campos vazios!")
+        else:
+            parametros = {
+                "caminhonavegador": caminhonavegadorentry.get(),
+                "idplanilha": iddaplanilhaentry.get(),
+                "linkdolooker": linkdolookerentry.get(),
+                "delayprecarregamento": delaycarregamentoentry.get(),
+                "delayacompanhamento": delayacompanhamentoentry.get(),
+                "delayclicweb": delaypreclickwebentry.get()
+            }
+
+            with open("parametros.json", "w") as outfile:
+                json.dump(parametros, outfile)
+            messagebox.showinfo(title="Cuidado!", message="Parâmetros gravados com sucesso!")
+    except:
+        messagebox.showinfo(title="Cuidado!", message="Valores de Delay inválidos")
+
+
 
 def carregarParametros():
     with open("parametros.json", "r") as infile:
@@ -80,15 +101,4 @@ atualizarparametros = tk.Button(window,text='4 - Carregar parâmetros', command=
 atualizarparametros.grid(column=0,row=9, columnspan=2,padx=5, pady=5,sticky=tk.E)
 
 
-# localfirefox = tk.Label(text="Local do Firefox: ")
-# pausaparaacompanhamento = tk.Label(text="Pausa para acompanhamento: ")
-# iddaplanilhaentry = tk.Entry()
-# localfirefoxentry = tk.Entry()
-# pausaparaacompanhamentoentry = tk.Entry()
-# iddaplanilha.pack()
-# localfirefox.pack()
-# pausaparaacompanhamento.pack()
-# iddaplanilhaentry.pack()
-# localfirefoxentry.pack()
-# pausaparaacompanhamentoentry.pack()
 window.mainloop()
