@@ -82,6 +82,7 @@ def funcao_principal():
     logging.debug('Robô iniciado')
     while True:
         try:
+            verificarPausa()
             driver.get(gerarLinkTMS())
             time.sleep(int(parametros["delayclicweb"]))
             driver.find_element(By.XPATH,'/html/body/main/div/div/div[2]/div/div/div/div/div[3]/div/div[2]/ul[2]/li[2]/a').click()
