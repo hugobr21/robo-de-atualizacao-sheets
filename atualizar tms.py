@@ -54,6 +54,7 @@ def atualizarBase(SAMPLE_RANGE_NAME,PROCESS_NAME):
     start_try = time.time() 
     while True:
         try:
+            time.sleep(int(parametros["delayprecarregamento"]))
             time.sleep(contador.delay)
             contador.contador_func(funcao_principal)
             os.chdir(r'C:\\Users\\'+ user_name +'\\Downloads')
@@ -82,21 +83,21 @@ def funcao_principal():
     while True:
         try:
             driver.get(gerarLinkTMS())
-            time.sleep(4)
+            time.sleep(int(parametros["delayclicweb"]))
             driver.find_element(By.XPATH,'/html/body/main/div/div/div[2]/div/div/div/div/div[3]/div/div[2]/ul[2]/li[2]/a').click()
             atualizarBase(SAMPLE_RANGE_NAME_TMS,'TMS')
             driver2.get(parametros["linkdolooker"])
             # driver2.get('https://meli.looker.com/dashboards/shipping::yms_journey_driver?Facility=%22BRXRJ1%2CSRJ1%22%2CXRJ1%2C%22XRJ1%2CSRJ1%22%2CXDRJ1%2CSRJ1&Arrival+Facility=SRJ1%2CXRJ1%2C%22XRJ1%2CSRJ1%22&Mile=%22first_mile%22&Licence+Plate=&Operation=&Date=today&Shipment+Type=')
-            time.sleep(4)
+            time.sleep(int(parametros["delayclicweb"]))
             driver2.find_element(By.ID,'dashboard-layout-wrapper').click()
-            time.sleep(4)
+            time.sleep(int(parametros["delayclicweb"]))
             driver2.find_element(By.XPATH,'/html/body/div[2]/div/div/div/div/section/div/div[2]/div[1]/div/div[2]/div/div/button[1]').click()
-            time.sleep(3)
+            time.sleep(int(parametros["delayclicweb"]))
             driver2.find_element(By.XPATH,'/html/body/div[3]/div/div/div/div/div/ul/li[2]/button/div[2]').click()
-            time.sleep(3)
+            time.sleep(int(parametros["delayclicweb"]))
             driver2.find_element(By.XPATH,'/html/body/div[3]/div/div/div[2]/footer/div[1]/button[1]').click()
             atualizarBase(SAMPLE_RANGE_NAME_YMS,'YMS')
-            print('Pausa para acompanhamento. (5min)')
+            print('Pausa para acompanhamento. (',parametros["delayacompanhamento"],'min)')
             time.sleep(60*5)
         except Exception as e:
             logging.debug('Erro na função funcao_principal - ' + str(e))
