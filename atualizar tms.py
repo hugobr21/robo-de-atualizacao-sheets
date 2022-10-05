@@ -26,6 +26,29 @@ def verificarPausa():
             print('verificar')
             pass
 
+def retornarEncerramentoFalse():
+    while True:
+        try:
+            with open("exit.json", "r") as infile:
+                parametros = json.load(infile)
+            break
+        except FileNotFoundError:
+            parametros = {
+            "statusencerramento": False,
+        }
+            with open("exit.json", "w") as outfile:
+                json.dump(parametros, outfile)
+
+    if parametros["statusencerramento"] == True:
+        parametros["statusencerramento"] = False
+    else:
+        parametros["statusencerramento"] = True
+    parametros = {
+        "statusencerramento": parametros["statusencerramento"],
+    }
+    with open("exit.json", "w") as outfile:
+        json.dump(parametros, outfile)
+
 def verificarEncerramento():
     while True:
         try:
@@ -34,6 +57,7 @@ def verificarEncerramento():
                 parametros = json.load(infile)
             if parametros["statusencerramento"]:
                 print("Encerrando robô...")
+                retornarEncerramentoFalse()
                 time.sleep(2)
                 exit()
             else:
