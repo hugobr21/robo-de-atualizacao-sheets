@@ -26,6 +26,23 @@ def verificarPausa():
             print('verificar')
             pass
 
+def verificarEncerramento():
+    while True:
+        try:
+            os.chdir(diretorio_robo)
+            with open("exit.json", "r") as infile:
+                parametros = json.load(infile)
+            if parametros["statusencerramento"]:
+                print("Encerrando robô...")
+                time.sleep(2)
+                exit()
+            else:
+                break
+        except:
+            time.sleep(2)
+            print('verificar')
+            pass
+
 def carregarParametros():
     with open("parametros.json", "r") as infile:
         parametros = json.load(infile)
