@@ -104,6 +104,7 @@ def funcao_principal():
     while True:
         try:
             verificarPausa()
+            verificarEncerramento()
             driver.get(gerarLinkTMS())
             time.sleep(int(carregarParametros()["delayclicweb"]))
             driver.find_element(By.XPATH,'/html/body/main/div/div/div[2]/div/div/div/div/div[3]/div/div[2]/ul[2]/li[2]/a').click()
