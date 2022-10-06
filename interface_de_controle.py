@@ -26,30 +26,6 @@ def agendarPausa():
         json.dump(parametros, outfile)
     messagebox.showinfo(title="Feito!", message="Pausa agendada com sucesso!")
 
-def agendarEncerramento():
-    while True:
-        try:
-            with open("exit.json", "r") as infile:
-                parametros = json.load(infile)
-            break
-        except FileNotFoundError:
-            parametros = {
-            "statusencerramento": False,
-        }
-            with open("exit.json", "w") as outfile:
-                json.dump(parametros, outfile)
-
-    if parametros["statusencerramento"] == True:
-        parametros["statusencerramento"] = False
-    else:
-        parametros["statusencerramento"] = True
-    parametros = {
-        "statusencerramento": parametros["statusencerramento"],
-    }
-    with open("exit.json", "w") as outfile:
-        json.dump(parametros, outfile)
-    messagebox.showinfo(title="Feito!", message="Encerramento agendado com sucesso!")
-
 def gravarParametros():
 
     try:
@@ -141,12 +117,10 @@ delaypreclickwebentry.grid(column=1,row=5,sticky=tk.E)
 
 agendamentodepausa = tk.Button(window,text='1 - Agendar Pausa/Retornar de Pausa',command=agendarPausa)
 agendamentodepausa.grid(column=0,row=6, columnspan=2,padx=5, pady=5,sticky=tk.E)
-agendamentodeencerramento = tk.Button(window,text='2 - Agendar Encerramento', command=agendarEncerramento)
-agendamentodeencerramento.grid(column=0,row=7, columnspan=2,padx=5, pady=5,sticky=tk.E)
-atualizarparametros = tk.Button(window,text='3 - Atualizar parâmetros', command=gravarParametros)
+atualizarparametros = tk.Button(window,text='2 - Atualizar parâmetros', command=gravarParametros)
+atualizarparametros.grid(column=0,row=7, columnspan=2,padx=5, pady=5,sticky=tk.E)
+atualizarparametros = tk.Button(window,text='3 - Carregar parâmetros', command=carregarParametros)
 atualizarparametros.grid(column=0,row=8, columnspan=2,padx=5, pady=5,sticky=tk.E)
-atualizarparametros = tk.Button(window,text='4 - Carregar parâmetros', command=carregarParametros)
-atualizarparametros.grid(column=0,row=9, columnspan=2,padx=5, pady=5,sticky=tk.E)
 
 
 window.mainloop()
