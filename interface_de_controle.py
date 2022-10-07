@@ -74,28 +74,30 @@ def carregarParametros():
     delayacompanhamentoentry.insert(0,parametros["delayacompanhamento"])
     delaypreclickwebentry.insert(0,parametros["delayclicweb"])
     return parametros
-    # pass
 
 window = tk.Tk()
-window.geometry("500x280")
+window.geometry("600x280")
 window.title("Parâmetros do robô")
+window.resizable(False,False)
 window.columnconfigure(1, weight=1)
 window.columnconfigure(0, weight=3)
 
 # labels da interface
 
-caminhonavegador = tk.Label(text="Caminho Firefox/Chrome: ")
+caminhonavegador = tk.Label(text="Caminho de instalação Firefox/Chrome: ")
 caminhonavegador.grid(column=0,row=0,sticky=tk.E)
 iddaplanilha = tk.Label(text="ID da planilha do Google Sheets: ")
 iddaplanilha.grid(column=0,row=1,sticky=tk.E)
 linkdolooker = tk.Label(text="Link do looker com filtros: ")
 linkdolooker.grid(column=0,row=2,sticky=tk.E)
-delayacompanhamento = tk.Label(text="Delay de pausa para acompanhamento: ")
+delayacompanhamento = tk.Label(text="Tempo(s*) de pausa para atualização de DataStudio (Sugerido: 10 minutos): ")
 delayacompanhamento.grid(column=0,row=3,sticky=tk.E)
-delaycarregamento = tk.Label(text="Delay de pré-carregamento de arquivo: ")
+delaycarregamento = tk.Label(text="Tempo(s*) de pausa para baixar arquivos (Sugerido: 70 segundos): ")
 delaycarregamento.grid(column=0,row=4,sticky=tk.E)
-delaypreclickweb = tk.Label(text="Delay de pré-click no browser: ")
+delaypreclickweb = tk.Label(text="Tempo(m*) de pausa para clicar no botão no Firefox/Chrome (Sugerido: 10 segundos): ")
 delaypreclickweb.grid(column=0,row=5,sticky=tk.E)
+observacoes = tk.Label(text="*Onde: s=Segundos, m=Minutos")
+observacoes.grid(column=0,row=9,sticky=tk.E)
 
 # campos de entrada
 
